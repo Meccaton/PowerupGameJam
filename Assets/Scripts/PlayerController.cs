@@ -1,35 +1,49 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 1f;
 
+    public float bulletSpeed = 10f;
+    public float fireRate = 1.0f;
+    private float shootCooldown;
+    public float shootCooldownTimestamp;
+
+    public GameObject bullet;
+
     void Start()
     {
-        
+        shootCooldown = 1.0f/fireRate;
     }
 
     void Update()
     {
+        MovementController();
+        ShooterController();
+    }
+
+    private void MovementController()
+    {
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector2.up * testVert(Vector2.up));
+            transform.Translate(Vector2.up * TestVert(Vector2.up));
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(Vector2.left * testHor(Vector2.left));
+            transform.Translate(Vector2.left * TestHor(Vector2.left));
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector2.down * testVert(Vector2.down));
+            transform.Translate(Vector2.down * TestVert(Vector2.down));
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(Vector2.right * testHor(Vector2.right));
+            transform.Translate(Vector2.right * TestHor(Vector2.right));
         }
     }
 
-    private float testVert(Vector2 v)
+    private float TestVert(Vector2 v)
     {
         Vector2 origin = transform.position;
         float offset;
@@ -52,7 +66,7 @@ public class PlayerController : MonoBehaviour
         return speed * Time.deltaTime;
     }
 
-    private float testHor(Vector2 v)
+    private float TestHor(Vector2 v)
     {
         Vector2 origin = transform.position;
         float offset;
@@ -73,5 +87,34 @@ public class PlayerController : MonoBehaviour
             return distance;
         }
         return speed * Time.deltaTime;
+    }
+
+    private void ShooterController()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            if(Time.time < shootCooldownTimestamp)
+            {
+                return;
+            }
+            else
+            {
+                shootCooldownTimestamp = Time.time + shootCooldown;
+
+                Vector3 shootDirection = Input.mousePosition;
+                shootDirection.z = 0.0f;
+                shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+                shootDirection -= transform.position;
+
+                GameObject b = Instantiate(bullet, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+
+                Rigidbody2D rb = b.GetComponent<Rigidbody2D>();
+                Vector2 bulletDirection = new Vector2(shootDirection.x, shootDirection.y).normalized;
+                Vector2 velocity = bulletDirection * bulletSpeed;// * Time.deltaTime;
+                rb.linearVelocity = velocity;
+                //rb.linearVelocity = new Vector2(shootDirection.x * bulletSpeed, shootDirection.y * bulletSpeed);
+                //rb.AddForce(b.transform.forward * bulletSpeed);
+            }
+        }
     }
 }
