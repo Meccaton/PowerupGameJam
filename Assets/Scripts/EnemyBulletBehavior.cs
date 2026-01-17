@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BulletBehavior : MonoBehaviour
+public class EnemyBulletBehavior : MonoBehaviour
 {
     private float duration = 10.0f;
 
@@ -10,6 +10,11 @@ public class BulletBehavior : MonoBehaviour
     }
 
     void Update()
+    {
+        
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         
     }

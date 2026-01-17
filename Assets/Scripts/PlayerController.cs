@@ -5,10 +5,11 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 1f;
 
+    public int bulletDamage = 1;
     public float bulletSpeed = 10f;
     public float fireRate = 1.0f;
     private float shootCooldown;
-    public float shootCooldownTimestamp;
+    private float shootCooldownTimestamp;
 
     public GameObject bullet;
 
@@ -106,14 +107,18 @@ public class PlayerController : MonoBehaviour
                 shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
                 shootDirection -= transform.position;
 
-                GameObject b = Instantiate(bullet, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                GameObject b = Instantiate(bullet, transform.position, Quaternion.identity);
+                PlayerBulletBehavior pbb = b.GetComponent<PlayerBulletBehavior>();
+                if (pbb != null)
+                {
+                    Debug.Log("Player bullet damage assigned correctly");
+                    pbb.damage = bulletDamage;
+                }
 
                 Rigidbody2D rb = b.GetComponent<Rigidbody2D>();
-                Vector2 bulletDirection = new Vector2(shootDirection.x, shootDirection.y).normalized;
-                Vector2 velocity = bulletDirection * bulletSpeed;// * Time.deltaTime;
+                Vector2 bulletDirection = (Vector2)shootDirection.normalized;
+                Vector2 velocity = bulletDirection * bulletSpeed;
                 rb.linearVelocity = velocity;
-                //rb.linearVelocity = new Vector2(shootDirection.x * bulletSpeed, shootDirection.y * bulletSpeed);
-                //rb.AddForce(b.transform.forward * bulletSpeed);
             }
         }
     }
