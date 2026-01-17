@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
                 if (pbb != null)
                 {
                     Debug.Log("Player bullet damage assigned correctly");
-                    pbb.damage = bulletDamage;
+                    pbb.Initialize(bulletDamage);
                 }
 
                 Rigidbody2D rb = b.GetComponent<Rigidbody2D>();

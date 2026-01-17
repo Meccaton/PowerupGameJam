@@ -6,6 +6,9 @@ public class EnemyBehavior : MonoBehaviour
     public float range = 10.0f;
     public float moveSpeed = 10.0f;
 
+    public int maxHealth = 5;
+    public int health;
+
     public float bulletSpeed = 1.0f;
     public float fireRate = 1.0f;
     private float shootCooldown;
@@ -25,6 +28,7 @@ public class EnemyBehavior : MonoBehaviour
             Destroy(gameObject);
         }
 
+        health = maxHealth;
         shootCooldown = 1.0f / fireRate;
         shootRange = range * 2.0f;
     }
@@ -70,6 +74,16 @@ public class EnemyBehavior : MonoBehaviour
                 Vector2 velocity = bulletDirection * bulletSpeed;
                 rb.linearVelocity = velocity;
             }
+        }
+    }
+
+    public void GetHit(int dmg)
+    {
+        health -= dmg;
+
+        if(health <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 }

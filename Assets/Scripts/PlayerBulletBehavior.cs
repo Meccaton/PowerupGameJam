@@ -5,6 +5,11 @@ public class PlayerBulletBehavior : MonoBehaviour
     public int damage;
     private float duration = 10.0f;
 
+    public void Initialize(int dmg)
+    {
+        damage = dmg;
+    }
+
     void Start()
     {
         Destroy(gameObject, duration);
@@ -17,12 +22,12 @@ public class PlayerBulletBehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        EnemyBehavior enemy = col.gameObject.GetComponent<EnemyBehavior>();
-
-        if (enemy != null) 
+        
+        if (col.gameObject.TryGetComponent<EnemyBehavior>(out var enemy)) 
         {
-            //enemy.GetHit(damage);
-            Debug.Log("Registering player bullet hit");
+            enemy.GetHit(damage);
+            Debug.Log("Registering player bullet hit: " + damage + " damage");
+            Destroy(gameObject);
         }
     }
 }
