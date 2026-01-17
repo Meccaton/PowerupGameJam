@@ -20,14 +20,16 @@ public class PlayerBulletBehavior : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        
-        if (col.gameObject.TryGetComponent<EnemyBehavior>(out var enemy)) 
+        if (col.CompareTag("Enemy"))
         {
-            enemy.GetHit(damage);
-            Debug.Log("Registering player bullet hit: " + damage + " damage");
-            Destroy(gameObject);
+            EnemyBehavior enemy = col.GetComponent<EnemyBehavior>();
+            if (enemy != null) 
+            {
+                enemy.GetHit(damage);
+                Destroy(gameObject);
+            }
         }
     }
 }

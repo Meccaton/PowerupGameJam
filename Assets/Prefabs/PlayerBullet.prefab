@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8529221021792806723}
   - component: {fileID: 424180780248925144}
   - component: {fileID: 6838708937305860589}
-  - component: {fileID: 7333290378380232361}
   - component: {fileID: 2789079265031826192}
+  - component: {fileID: 5927141968294999963}
   m_Layer: 0
   m_Name: PlayerBullet
   m_TagString: Untagged
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
@@ -119,20 +119,8 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &7333290378380232361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1830785944531837964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebc9af32a849e284dab45800f850e417, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BulletBehavior
 --- !u!58 &2789079265031826192
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -169,3 +157,16 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &5927141968294999963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830785944531837964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c659976d80549664ca64c6f00472df7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerBulletBehavior
+  damage: 1

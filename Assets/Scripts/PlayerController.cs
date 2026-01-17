@@ -111,7 +111,6 @@ public class PlayerController : MonoBehaviour
                 PlayerBulletBehavior pbb = b.GetComponent<PlayerBulletBehavior>();
                 if (pbb != null)
                 {
-                    Debug.Log("Player bullet damage assigned correctly");
                     pbb.Initialize(bulletDamage);
                 }
 
