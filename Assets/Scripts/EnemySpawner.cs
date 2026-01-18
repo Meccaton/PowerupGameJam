@@ -5,19 +5,21 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemy;
 
     private Transform pc;
-    private int xPos;
-    private int yPos;
+    private float xPos;
+    private float yPos;
     private Vector2 spawnPos;
     private float spawnCooldown;
 
     private float range = 10.0f;
     private float maxRange = 25.0f;
     private float shootRange = 10.0f;
-    private float moveSpeed = 10.0f;
-    private int maxHealth = 5;
-    private float bulletSpeed = 1.0f;
+    private float moveSpeed = 3.0f;
+    private int maxHealth = 3;
+    private float bulletSpeed = 2.0f;
     private float maxBulletSpeed = 100.0f;
     private float fireRate = 1.0f;
+    private int bulletDamage = 1;
+    private float bulletDuration = 5.0f;
 
     void Start()
     {
@@ -25,8 +27,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (pc == null)
         {
-            Debug.Log("No player found");
-            pc.position = new Vector2(0, 0);
+            Debug.Log("Player not found");
         }
 
         spawnCooldown = 0f;
@@ -46,23 +47,23 @@ public class EnemySpawner : MonoBehaviour
         switch (Random.Range(0, 4))
         {
             case 0:
-                xPos = 50;
-                yPos = Random.Range(-50, 50);
+                xPos = pc.position.x + 50;
+                yPos = pc.position.y + Random.Range(-50, 50);
                 spawnPos = new Vector2(xPos, yPos);
                 break;
             case 1:
-                xPos = Random.Range(-50, 50);
-                yPos = -50;
+                xPos = pc.position.x + Random.Range(-50, 50);
+                yPos = pc.position.y - 50;
                 spawnPos = new Vector2(xPos, yPos);
                 break;
             case 2:
-                xPos = -50;
-                yPos = Random.Range(-50, 50);
+                xPos = pc.position.x - 50;
+                yPos = pc.position.y + Random.Range(-50, 50);
                 spawnPos = new Vector2(xPos, yPos);
                 break;
             case 3:
-                xPos = Random.Range(-50, 50);
-                yPos = 50;
+                xPos = pc.position.x + Random.Range(-50, 50);
+                yPos = pc.position.y + 50;
                 spawnPos = new Vector2(xPos, yPos);
                 break;
         }
@@ -71,7 +72,7 @@ public class EnemySpawner : MonoBehaviour
         EnemyBehavior stats = guy.GetComponent<EnemyBehavior>();
         if (stats != null)
         {
-            stats.Initialize(range, moveSpeed, maxHealth, bulletSpeed, fireRate, shootRange);
+            stats.Initialize(range, moveSpeed, maxHealth, bulletSpeed, fireRate, shootRange, bulletDamage, bulletDuration);
         }
 
         spawnCooldown = Time.time + Random.Range(1, 6);
@@ -79,7 +80,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void BuffGuys()
     {
-        int randStat = Random.Range(0, 5);
+        int randStat = Random.Range(0, 7);
         switch (randStat)
         {
             case 0:
@@ -87,19 +88,25 @@ public class EnemySpawner : MonoBehaviour
                 shootRange = Mathf.Max(shootRange, range);
                 break;
             case 1:
-                moveSpeed += 1;
+                moveSpeed += .25f;
                 break;
             case 2:
                 maxHealth += 1;
                 break;
             case 3:
-                bulletSpeed = Mathf.Min(bulletSpeed + 5, maxBulletSpeed);
+                bulletSpeed = Mathf.Min(bulletSpeed + 1, maxBulletSpeed);
                 break;
             case 4:
-                fireRate += 1;
+                fireRate += .1f;
                 break;
             case 5:
                 shootRange += 1;
+                break;
+            case 6:
+                bulletDamage += 1;
+                break;
+            case 7:
+                bulletDuration += 2.5f;
                 break;
         }
     }

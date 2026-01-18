@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerBulletBehavior : MonoBehaviour
 {
     public int damage;
-    private float duration = 10.0f;
+    private float duration = 5.0f;
 
     public void Initialize(int dmg)
     {

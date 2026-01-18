@@ -14,13 +14,14 @@ public class EnemyBehavior : MonoBehaviour
     private float shootCooldown;
     private float shootCooldownTimestamp;
     public float shootRange = 10.0f;
-    public int bulletDamage;
+    public int bulletDamage = 1;
+    public float bulletDuration = 5.0f;
 
     public GameObject bullet;
 
     private Transform pc;
 
-    public void Initialize(float r, float ms, int mh, float bs, float fr, float sr)
+    public void Initialize(float r, float ms, int mh, float bs, float fr, float sr, int bd, float bdur)
     {
         range = r;
         moveSpeed = ms;
@@ -28,6 +29,8 @@ public class EnemyBehavior : MonoBehaviour
         bulletSpeed = bs;
         fireRate = fr;
         shootRange = sr;
+        bulletDamage = bd;
+        bulletDuration = bdur;
     }
     
     void Start()
@@ -79,6 +82,12 @@ public class EnemyBehavior : MonoBehaviour
                 Vector2 aimDirection = (pc.position - transform.position).normalized;
 
                 GameObject b = Instantiate(bullet, transform.position, Quaternion.identity);
+
+                EnemyBulletBehavior ebb = b.GetComponent<EnemyBulletBehavior>();
+                if (ebb != null)
+                {
+                    ebb.Initialize(bulletDamage, bulletDuration);
+                }
 
                 Rigidbody2D rb = b.GetComponent<Rigidbody2D>();
                 Vector2 bulletDirection = aimDirection.normalized;

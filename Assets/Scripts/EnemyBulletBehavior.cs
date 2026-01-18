@@ -2,7 +2,14 @@ using UnityEngine;
 
 public class EnemyBulletBehavior : MonoBehaviour
 {
+    public int damage;
     private float duration = 5.0f;
+
+    public void Initialize(int dmg, float dur)
+    {
+        damage = dmg;
+        duration = dur;
+    }
 
     void Start()
     {
@@ -14,8 +21,16 @@ public class EnemyBulletBehavior : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        
+        if (col.CompareTag("Player"))
+        {
+            PlayerController pc = col.GetComponent<PlayerController>();
+            if (pc != null)
+            {
+                pc.GetHit(damage);
+                Destroy(gameObject);
+            }
+        }
     }
 }

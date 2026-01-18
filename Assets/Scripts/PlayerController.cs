@@ -5,6 +5,9 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 1f;
 
+    public int maxHealth = 5;
+    public int health;
+
     public int bulletDamage = 1;
     public float bulletSpeed = 10f;
     public float fireRate = 1.0f;
@@ -13,81 +16,51 @@ public class PlayerController : MonoBehaviour
 
     public GameObject bullet;
 
+    private bool alive;
+    private float deadTime = 5f;
+    private float restartTimer;
+
     void Start()
     {
+        alive = true;
         shootCooldown = 1.0f/fireRate;
+        health = maxHealth;
     }
 
     void Update()
     {
-        MovementController();
-        ShooterController();
+        if (alive)
+        {
+            MovementController();
+            ShooterController();
+        }
+        else
+        {
+            if(Time.time > restartTimer)
+            {
+                // Restart Here
+            }
+        }
     }
 
     private void MovementController()
     {
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector2.up * TestVert(Vector2.up));
+            transform.Translate(Vector2.up * speed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(Vector2.left * TestHor(Vector2.left));
+            transform.Translate(Vector2.left * speed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector2.down * TestVert(Vector2.down));
+            transform.Translate(Vector2.down * speed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(Vector2.right * TestHor(Vector2.right));
+            transform.Translate(Vector2.right * speed * Time.deltaTime);
         }
-    }
-
-    private float TestVert(Vector2 v)
-    {
-        Vector2 origin = transform.position;
-        float offset;
-        if (v.Equals(Vector2.up))
-        {
-            offset = .1f;
-        } 
-        else
-        {
-            offset = -.5f;
-        }
-        origin.y += offset;
-        RaycastHit2D raycast = Physics2D.Raycast(origin, v, speed * Time.deltaTime);
-
-        if(raycast.collider != null && raycast.collider.gameObject.tag == "Collidable")
-        {
-            float distance = Mathf.Abs(raycast.point.y - origin.y);
-            return distance;
-        }
-        return speed * Time.deltaTime;
-    }
-
-    private float TestHor(Vector2 v)
-    {
-        Vector2 origin = transform.position;
-        float offset;
-        if (v.Equals(Vector2.left))
-        {
-            offset = -.125f;
-        }
-        else
-        {
-            offset = .125f;
-        }
-        origin.x += offset;
-        RaycastHit2D raycast = Physics2D.Raycast(origin, v, speed * Time.deltaTime);
-        
-        if(raycast.collider != null && raycast.collider.gameObject.tag == "Collidable")
-        {
-            float distance = Mathf.Abs(raycast.point.x - origin.x);
-            return distance;
-        }
-        return speed * Time.deltaTime;
     }
 
     private void ShooterController()
@@ -119,6 +92,19 @@ public class PlayerController : MonoBehaviour
                 Vector2 velocity = bulletDirection * bulletSpeed;
                 rb.linearVelocity = velocity;
             }
+        }
+    }
+
+    public void GetHit(int dmg)
+    {
+        health -= dmg;
+        Debug.Log("Health: " + health);
+
+        if(health <= 0 && alive)
+        {
+            alive = false;
+            Debug.Log("Alive = " + alive);
+            restartTimer = Time.time + deadTime;
         }
     }
 }
