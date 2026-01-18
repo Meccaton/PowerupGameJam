@@ -33,6 +33,11 @@ public class EnemySpawner : MonoBehaviour
 
         spawnCooldown = 0f;
         numChanges = 0;
+
+        Instantiate(enemy, new Vector2(30, Random.Range(-20, 20)), Quaternion.identity);
+        Instantiate(enemy, new Vector2(-30, Random.Range(-20, 20)), Quaternion.identity);
+        Instantiate(enemy, new Vector2(Random.Range(-20, 20), 30), Quaternion.identity);
+        Instantiate(enemy, new Vector2(Random.Range(-20, 20), -30), Quaternion.identity);
     }
 
     void Update()

@@ -133,6 +133,11 @@ public class PlayerController : MonoBehaviour
         headModel.SetActive(true);
     }
 
+    public void TriggerPosession()
+    {
+
+    }
+
     public void GetHit(int dmg)
     {
         health -= dmg;

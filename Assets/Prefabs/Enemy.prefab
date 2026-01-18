@@ -50,13 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1cb2128ace5c9048ad443ae4e911743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBehavior
-  range: 20
+  range: 10
   moveSpeed: 2
-  maxHealth: 5
+  maxHealth: 3
   health: 0
   bulletSpeed: 10
   fireRate: 1
-  shootRange: 10
+  shootRange: 12
   bulletDamage: 1
   bulletDuration: 5
   bullet: {fileID: 1830785944531837964, guid: b4f05d205d3d67542997572a5ad8fe8f, type: 3}

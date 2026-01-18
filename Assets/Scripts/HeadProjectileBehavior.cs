@@ -23,4 +23,24 @@ public class HeadProjectileBehavior : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("Enemy"))
+        {
+            EnemyBehavior enemy = col.GetComponent<EnemyBehavior>();
+            if (enemy != null)
+            {
+                if(enemy.health < enemy.health / 2)
+                {
+                    // Trigger posession
+                }
+                else
+                {
+                    pc.ResetHead();
+                    Destroy(gameObject);
+                }
+            }
+        }
+    }
 }
