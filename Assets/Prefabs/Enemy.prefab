@@ -56,6 +56,9 @@ MonoBehaviour:
   health: 0
   bulletSpeed: 10
   fireRate: 1
+  shootRange: 10
+  bulletDamage: 1
+  bulletDuration: 5
   bullet: {fileID: 1830785944531837964, guid: b4f05d205d3d67542997572a5ad8fe8f, type: 3}
 --- !u!61 &3662213716363758869
 BoxCollider2D:

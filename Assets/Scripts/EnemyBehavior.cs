@@ -8,6 +8,7 @@ public class EnemyBehavior : MonoBehaviour
 
     public int maxHealth = 5;
     public int health;
+    private float size;
 
     public float bulletSpeed = 1.0f;
     public float fireRate = 1.0f;
@@ -17,11 +18,14 @@ public class EnemyBehavior : MonoBehaviour
     public int bulletDamage = 1;
     public float bulletDuration = 5.0f;
 
+    private int numChanges;
+    private float scaleModifier;
+
     public GameObject bullet;
 
     private Transform pc;
 
-    public void Initialize(float r, float ms, int mh, float bs, float fr, float sr, int bd, float bdur)
+    public void Initialize(float r, float ms, int mh, float bs, float fr, float sr, int bd, float bdur, int nc)
     {
         range = r;
         moveSpeed = ms;
@@ -31,6 +35,7 @@ public class EnemyBehavior : MonoBehaviour
         shootRange = sr;
         bulletDamage = bd;
         bulletDuration = bdur;
+        numChanges = nc;
     }
     
     void Start()
@@ -44,7 +49,10 @@ public class EnemyBehavior : MonoBehaviour
 
         health = maxHealth;
         shootCooldown = 1.0f / fireRate;
-        //shootRange = range * 2.0f;
+
+        float scaleModifierModifier = Random.Range(75, 150);
+        scaleModifier = numChanges / scaleModifierModifier;
+        gameObject.transform.localScale = new Vector3(1 + scaleModifier, 1 + scaleModifier, 0);
     }
 
     void Update()

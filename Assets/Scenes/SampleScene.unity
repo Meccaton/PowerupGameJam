@@ -917,12 +917,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78fc2318f930534b873a807a6cf63d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  speed: 3
+  speed: 5
   maxHealth: 3
   health: 0
   bulletDamage: 1
   bulletSpeed: 10
-  fireRate: 1
+  fireRate: 3
   bullet: {fileID: 1830785944531837964, guid: 8f52699830670544a85c9a65cf131200, type: 3}
 --- !u!4 &1463591320
 Transform:

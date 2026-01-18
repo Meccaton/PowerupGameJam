@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,7 +39,8 @@ public class PlayerController : MonoBehaviour
         {
             if(Time.time > restartTimer)
             {
-                // Restart Here
+                string currentSceneName = SceneManager.GetActiveScene().name;
+                SceneManager.LoadScene(currentSceneName);
             }
         }
     }
@@ -75,12 +77,8 @@ public class PlayerController : MonoBehaviour
             {
                 shootCooldownTimestamp = Time.time + shootCooldown;
 
-                Vector3 shootDirection = Input.mousePosition;
-                shootDirection.z = 0.0f;
-                shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
-                shootDirection -= transform.position;
-
                 GameObject b = Instantiate(bullet, transform.position, Quaternion.identity);
+
                 PlayerBulletBehavior pbb = b.GetComponent<PlayerBulletBehavior>();
                 if (pbb != null)
                 {
@@ -88,8 +86,14 @@ public class PlayerController : MonoBehaviour
                 }
 
                 Rigidbody2D rb = b.GetComponent<Rigidbody2D>();
-                Vector2 bulletDirection = (Vector2)shootDirection.normalized;
-                Vector2 velocity = bulletDirection * bulletSpeed;
+
+                Vector3 shootDirection = Input.mousePosition;
+                shootDirection.z = 0.0f;
+                shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+                shootDirection = shootDirection - transform.position;
+                shootDirection = shootDirection.normalized;
+                
+                Vector2 velocity = shootDirection * bulletSpeed;
                 rb.linearVelocity = velocity;
             }
         }
