@@ -8,7 +8,7 @@ public class EnemyBehavior : MonoBehaviour
 
     public int maxHealth = 5;
     public int health;
-    private float size;
+    private Vector3 size;
 
     public float bulletSpeed = 1.0f;
     public float fireRate = 1.0f;
@@ -24,6 +24,7 @@ public class EnemyBehavior : MonoBehaviour
     public GameObject bullet;
 
     private Transform pc;
+    private GameObject player;
 
     public void Initialize(float r, float ms, int mh, float bs, float fr, float sr, int bd, float bdur, int nc)
     {
@@ -53,6 +54,7 @@ public class EnemyBehavior : MonoBehaviour
         float scaleModifierModifier = Random.Range(75, 150);
         scaleModifier = numChanges / scaleModifierModifier;
         gameObject.transform.localScale = new Vector3(1 + scaleModifier, 1 + scaleModifier, 0);
+        size = gameObject.transform.localScale;
     }
 
     void Update()
@@ -103,6 +105,13 @@ public class EnemyBehavior : MonoBehaviour
                 rb.linearVelocity = velocity;
             }
         }
+    }
+
+    public void TriggerPosession()
+    {
+        PosessionManager.pm.TriggerPosession(gameObject.transform.position, moveSpeed, maxHealth, 
+            bulletSpeed, fireRate, bulletDamage, size);
+        Destroy(gameObject);
     }
 
     public void GetHit(int dmg)

@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemy;
+    public float maxSpawnTime = 6.0f;
 
     private Transform pc;
     private float xPos;
@@ -85,7 +86,7 @@ public class EnemySpawner : MonoBehaviour
             stats.Initialize(range, moveSpeed, maxHealth, bulletSpeed, fireRate, shootRange, bulletDamage, bulletDuration, numChanges);
         }
 
-        spawnCooldown = Time.time + Random.Range(1, 4);
+        spawnCooldown = Time.time + Random.Range(1, maxSpawnTime);
     }
 
     private void BuffGuys()

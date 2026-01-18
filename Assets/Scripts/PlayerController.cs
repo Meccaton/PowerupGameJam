@@ -20,11 +20,23 @@ public class PlayerController : MonoBehaviour
     public GameObject bullet;
     public GameObject headProjectile;
     public GameObject headModel;
+    public GameObject deadBody;
 
     private bool canFireHead;
     private bool alive;
     private float deadTime = 5.0f;
     private float restartTimer;
+
+    public void Initialize(float ms, int mh, float bs, float fr, int bd, Vector3 s)
+    {
+        speed = ms + 1;
+        maxHealth = mh * 2;
+        //health = maxHealth;
+        bulletSpeed = bs * 3;
+        fireRate = fr * 2;
+        bulletDamage = bd + 1;
+        gameObject.transform.localScale = s;
+    }
 
     void Start()
     {
@@ -135,7 +147,8 @@ public class PlayerController : MonoBehaviour
 
     public void TriggerPosession()
     {
-
+        Instantiate(deadBody, transform.position, Quaternion.identity);
+        ResetHead();
     }
 
     public void GetHit(int dmg)
