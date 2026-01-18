@@ -4,21 +4,26 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 1f;
+    public float speed = 1.0f;
 
     public int maxHealth = 5;
     public int health;
 
     public int bulletDamage = 1;
-    public float bulletSpeed = 10f;
+    public float bulletSpeed = 10.0f;
     public float fireRate = 1.0f;
     private float shootCooldown;
     private float shootCooldownTimestamp;
 
-    public GameObject bullet;
+    public float headShootSpeed = 15.0f;
 
+    public GameObject bullet;
+    public GameObject headProjectile;
+    public GameObject headModel;
+
+    private bool canFireHead;
     private bool alive;
-    private float deadTime = 5f;
+    private float deadTime = 5.0f;
     private float restartTimer;
 
     void Start()
@@ -26,6 +31,7 @@ public class PlayerController : MonoBehaviour
         alive = true;
         shootCooldown = 1.0f/fireRate;
         health = maxHealth;
+        canFireHead = true;
     }
 
     void Update()
@@ -34,6 +40,7 @@ public class PlayerController : MonoBehaviour
         {
             MovementController();
             ShooterController();
+            PosessionController();
         }
         else
         {
@@ -97,6 +104,33 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = velocity;
             }
         }
+    }
+
+    private void PosessionController()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (canFireHead)
+            {
+                canFireHead = false;
+                headModel.SetActive(false);
+                GameObject hp = Instantiate(headProjectile, headModel.transform.position, Quaternion.identity);
+                Rigidbody2D rb = hp.GetComponent<Rigidbody2D>();
+                Vector3 shootDirection = Input.mousePosition;
+                shootDirection.z = 0.0f;
+                shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+                shootDirection = shootDirection - headModel.transform.position;
+                shootDirection = shootDirection.normalized;
+                Vector2 vel = shootDirection * headShootSpeed;
+                rb.linearVelocity = vel;
+            }
+        }
+    }
+
+    public void ResetHead()
+    {
+        canFireHead = true;
+        headModel.SetActive(true);
     }
 
     public void GetHit(int dmg)
