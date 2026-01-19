@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyBehavior : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class EnemyBehavior : MonoBehaviour
 
     public float maxHealth = 5f;
     public float health;
+    public Slider healthBar;
     public Vector3 size;
 
     public float bulletSpeed = 1.0f;
@@ -31,6 +33,7 @@ public class EnemyBehavior : MonoBehaviour
         range = r;
         moveSpeed = ms;
         maxHealth = mh;
+        health = maxHealth;
         bulletSpeed = bs;
         fireRate = fr;
         shootRange = sr;
@@ -38,6 +41,8 @@ public class EnemyBehavior : MonoBehaviour
         bulletDuration = bdur;
         numChanges = nc;
         torso.GetComponent<Renderer>().material.color = c;
+        healthBar.maxValue = maxHealth;
+        healthBar.value = health;
     }
     
     void Start()
@@ -56,6 +61,8 @@ public class EnemyBehavior : MonoBehaviour
         scaleModifier = numChanges / scaleModifierModifier;
         gameObject.transform.localScale = new Vector3(1 + scaleModifier, 1 + scaleModifier, 0);
         size = gameObject.transform.localScale;
+        healthBar.maxValue = maxHealth;
+        healthBar.value = health;
     }
 
     void Update()
@@ -113,8 +120,9 @@ public class EnemyBehavior : MonoBehaviour
     public bool GetHit(float dmg)
     {
         health -= dmg;
+        healthBar.value = health;
 
-        if(health <= 0f)
+        if (health <= 0f)
         {
             Destroy(gameObject);
             return true;

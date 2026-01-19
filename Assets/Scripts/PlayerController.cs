@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     public float maxHealth = 5f;
     public float health;
+    public Slider healthBar;
     private float postPosessionInvincibilityTimer = .2f;
     private float invincibleDuration;
 
@@ -42,7 +44,8 @@ public class PlayerController : MonoBehaviour
         bulletDamage = bd;
         gameObject.transform.localScale = s;
         torso.GetComponent<Renderer>().material.color = c;
-
+        healthBar.maxValue = maxHealth;
+        healthBar.value = health;
     }
 
     void Start()
@@ -52,6 +55,8 @@ public class PlayerController : MonoBehaviour
         health = maxHealth;
         canFireHead = true;
         canTakeDamage = true;
+        healthBar.maxValue = maxHealth;
+        healthBar.value = health;
     }
 
     void Update()
@@ -172,12 +177,11 @@ public class PlayerController : MonoBehaviour
         if (canTakeDamage)
         {
             health -= dmg;
-            Debug.Log("Health: " + health);
+            healthBar.value = health;
 
             if (health <= 0 && alive)
             {
                 alive = false;
-                Debug.Log("Alive = " + alive);
                 restartTimer = Time.time + deadTime;
             }
         }

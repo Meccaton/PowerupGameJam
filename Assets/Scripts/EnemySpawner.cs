@@ -115,13 +115,14 @@ public class EnemySpawner : MonoBehaviour
             prevBuffMod = buffMod;
 
             range += .25f;
-            moveSpeed += .5f;
-            maxHealth += .5f;
-            bulletSpeed += .5f;
-            fireRate += .5f;
+            moveSpeed += 1f;
+            maxHealth += 1f;
+            bulletSpeed += 1.333f;
+            fireRate += 1f;
             shootRange += .5f;
             bulletDamage += .25f;
             bulletDuration += .1f;
+            maxSpawnTime -= .25f;
             numChanges++;
         }
 
@@ -136,11 +137,11 @@ public class EnemySpawner : MonoBehaviour
                     c = Color.blue;
                     break;
                 case 1:
-                    specialMaxHealth = maxHealth * Random.Range(2, 4);
+                    specialMaxHealth = maxHealth * Random.Range(3, 5);
                     c = Color.orange;
                     break;
                 case 2:
-                    specialBulletSpeed = bulletSpeed * Random.Range(1.1f, 2f);
+                    specialBulletSpeed = bulletSpeed * Random.Range(2f, 3f);
                     c = Color.yellow;
                     break;
                 case 3:
