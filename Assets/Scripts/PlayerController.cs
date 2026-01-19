@@ -6,12 +6,15 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 1.0f;
 
-    public int maxHealth = 5;
-    public int health;
+    public float maxHealth = 5f;
+    public float health;
+    private float postPosessionInvincibilityTimer = .2f;
+    private float invincibleDuration;
 
-    public int bulletDamage = 1;
+    public float bulletDamage = 1f;
     public float bulletSpeed = 10.0f;
     public float fireRate = 1.0f;
+    private bool canTakeDamage;
     private float shootCooldown;
     private float shootCooldownTimestamp;
 
@@ -21,21 +24,25 @@ public class PlayerController : MonoBehaviour
     public GameObject headProjectile;
     public GameObject headModel;
     public GameObject deadBody;
+    public GameObject torso;
 
     private bool canFireHead;
     private bool alive;
     private float deadTime = 5.0f;
     private float restartTimer;
 
-    public void Initialize(float ms, int mh, float bs, float fr, int bd, Vector3 s)
+    public void Initialize(float ms, float mh, float bs, float fr, float bd, Vector3 s, Color c)
     {
-        speed = ms + 1;
-        maxHealth = mh * 2;
-        //health = maxHealth;
-        bulletSpeed = bs * 3;
-        fireRate = fr * 2;
-        bulletDamage = bd + 1;
+        speed = ms;
+        maxHealth = mh;
+        health = maxHealth;
+        bulletSpeed = bs;
+        fireRate = fr;
+        shootCooldown = 1.0f / fireRate;
+        bulletDamage = bd;
         gameObject.transform.localScale = s;
+        torso.GetComponent<Renderer>().material.color = c;
+
     }
 
     void Start()
@@ -44,6 +51,7 @@ public class PlayerController : MonoBehaviour
         shootCooldown = 1.0f/fireRate;
         health = maxHealth;
         canFireHead = true;
+        canTakeDamage = true;
     }
 
     void Update()
@@ -56,11 +64,12 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if(Time.time > restartTimer)
-            {
-                string currentSceneName = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(currentSceneName);
-            }
+            gameObject.transform.rotation = Quaternion.Euler(0, 0, -90f);
+            //if(Time.time > restartTimer)
+            //{
+            //    string currentSceneName = SceneManager.GetActiveScene().name;
+            //    SceneManager.LoadScene(currentSceneName);
+            //}
         }
     }
 
@@ -137,6 +146,11 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = vel;
             }
         }
+
+        if(Time.time > invincibleDuration)
+        {
+            canTakeDamage = true;
+        }
     }
 
     public void ResetHead()
@@ -147,20 +161,25 @@ public class PlayerController : MonoBehaviour
 
     public void TriggerPosession()
     {
-        Instantiate(deadBody, transform.position, Quaternion.identity);
+        //Instantiate(deadBody, transform.position, Quaternion.identity);
         ResetHead();
+        canTakeDamage = false;
+        invincibleDuration = Time.time + postPosessionInvincibilityTimer;
     }
 
-    public void GetHit(int dmg)
+    public void GetHit(float dmg)
     {
-        health -= dmg;
-        Debug.Log("Health: " + health);
-
-        if(health <= 0 && alive)
+        if (canTakeDamage)
         {
-            alive = false;
-            Debug.Log("Alive = " + alive);
-            restartTimer = Time.time + deadTime;
+            health -= dmg;
+            Debug.Log("Health: " + health);
+
+            if (health <= 0 && alive)
+            {
+                alive = false;
+                Debug.Log("Alive = " + alive);
+                restartTimer = Time.time + deadTime;
+            }
         }
     }
 }

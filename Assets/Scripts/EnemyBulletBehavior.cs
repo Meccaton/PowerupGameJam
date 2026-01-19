@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class EnemyBulletBehavior : MonoBehaviour
 {
-    public int damage;
+    public float damage;
     private float duration = 5.0f;
 
-    public void Initialize(int dmg, float dur)
+    public void Initialize(float dmg, float dur)
     {
         damage = dmg;
         duration = dur;

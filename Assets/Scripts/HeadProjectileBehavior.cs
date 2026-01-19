@@ -31,17 +31,14 @@ public class HeadProjectileBehavior : MonoBehaviour
             EnemyBehavior enemy = col.GetComponent<EnemyBehavior>();
             if (enemy != null)
             {
-                //Debug.Log("Enemy health: " + enemy.health + "     Threshold: " + enemy.maxHealth/2);
                 if(enemy.health <= enemy.maxHealth / 2)
                 {
-                    Debug.Log("Triggering Posession");
                     enemy.TriggerPosession();
                     pc.TriggerPosession();
                     Destroy(gameObject);
                 }
                 else
                 {
-                    Debug.Log("Resetting Head");
                     pc.ResetHead();
                     Destroy(gameObject);
                 }

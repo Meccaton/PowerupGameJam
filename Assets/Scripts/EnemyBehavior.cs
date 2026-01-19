@@ -6,27 +6,27 @@ public class EnemyBehavior : MonoBehaviour
     public float range = 10.0f;
     public float moveSpeed = 10.0f;
 
-    public int maxHealth = 5;
-    public int health;
-    private Vector3 size;
+    public float maxHealth = 5f;
+    public float health;
+    public Vector3 size;
 
     public float bulletSpeed = 1.0f;
     public float fireRate = 1.0f;
     private float shootCooldown;
     private float shootCooldownTimestamp;
     public float shootRange = 10.0f;
-    public int bulletDamage = 1;
+    public float bulletDamage = 1f;
     public float bulletDuration = 5.0f;
 
     private int numChanges;
     private float scaleModifier;
 
     public GameObject bullet;
+    public GameObject torso;
 
     private Transform pc;
-    private GameObject player;
 
-    public void Initialize(float r, float ms, int mh, float bs, float fr, float sr, int bd, float bdur, int nc)
+    public void Initialize(float r, float ms, float mh, float bs, float fr, float sr, float bd, float bdur, int nc, Color c)
     {
         range = r;
         moveSpeed = ms;
@@ -37,6 +37,7 @@ public class EnemyBehavior : MonoBehaviour
         bulletDamage = bd;
         bulletDuration = bdur;
         numChanges = nc;
+        torso.GetComponent<Renderer>().material.color = c;
     }
     
     void Start()
@@ -84,11 +85,6 @@ public class EnemyBehavior : MonoBehaviour
             {
                 shootCooldownTimestamp = Time.time + shootCooldown;
 
-                //Vector3 shootDirection = pc.transform.position;
-                //shootDirection.z = 0.0f;
-                //shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
-                //shootDirection -= transform.position;
-
                 Vector2 aimDirection = (pc.position - transform.position).normalized;
 
                 GameObject b = Instantiate(bullet, transform.position, Quaternion.identity);
@@ -110,17 +106,19 @@ public class EnemyBehavior : MonoBehaviour
     public void TriggerPosession()
     {
         PosessionManager.pm.TriggerPosession(gameObject.transform.position, moveSpeed, maxHealth, 
-            bulletSpeed, fireRate, bulletDamage, size);
+            bulletSpeed, fireRate, bulletDamage, size, torso.GetComponent<Renderer>().material.color);
         Destroy(gameObject);
     }
 
-    public void GetHit(int dmg)
+    public bool GetHit(float dmg)
     {
         health -= dmg;
 
-        if(health <= 0)
+        if(health <= 0f)
         {
             Destroy(gameObject);
+            return true;
         }
+        return false;
     }
 }

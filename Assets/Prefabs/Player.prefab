@@ -152,6 +152,8 @@ MonoBehaviour:
   bullet: {fileID: 1830785944531837964, guid: 8f52699830670544a85c9a65cf131200, type: 3}
   headProjectile: {fileID: 8191043742138940244, guid: 2e4affcde6e9c364abc153c69fad8429, type: 3}
   headModel: {fileID: 1936009238679418342}
+  deadBody: {fileID: 4710073259261366217, guid: 440bd18a6fb22dd4ab444fda376e2308, type: 3}
+  torso: {fileID: 6600317907886434746}
 --- !u!61 &2417000481998739785
 BoxCollider2D:
   m_ObjectHideFlags: 0

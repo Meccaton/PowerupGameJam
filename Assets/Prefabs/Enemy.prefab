@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBehavior
   range: 10
-  moveSpeed: 2
+  moveSpeed: 3
   maxHealth: 3
   health: 0
   bulletSpeed: 10
@@ -60,6 +60,7 @@ MonoBehaviour:
   bulletDamage: 1
   bulletDuration: 5
   bullet: {fileID: 1830785944531837964, guid: b4f05d205d3d67542997572a5ad8fe8f, type: 3}
+  torso: {fileID: 2959435525213326285}
 --- !u!61 &3662213716363758869
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -215,7 +216,7 @@ SpriteRenderer:
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

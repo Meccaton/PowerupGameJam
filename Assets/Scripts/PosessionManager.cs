@@ -5,7 +5,6 @@ public class PosessionManager : MonoBehaviour
     public static PosessionManager pm;
 
     public GameObject player;
-    //public GameObject playerPrefab;
     public GameObject deadBodyPrefab;
 
     private void Awake()
@@ -31,19 +30,20 @@ public class PosessionManager : MonoBehaviour
         
     }
 
-    public void TriggerPosession(Vector2 enemyPos, float ms, int mh, float bs, float fr, int bd, Vector3 s)
+    public void TriggerPosession(Vector2 enemyPos, float ms, float mh, float bs, float fr, float bd, Vector3 s, Color c)
     {
         if (pm != null)
         {
-            //GameObject player = Instantiate(playerPrefab, enemyPos, Quaternion.identity);
-            Instantiate(deadBodyPrefab, enemyPos, Quaternion.identity);
-            Instantiate(deadBodyPrefab, player.transform.position, Quaternion.identity);
+            PlayerController playerInfo = player.GetComponent<PlayerController>();
+            GameObject db = Instantiate(deadBodyPrefab, player.transform.position, Quaternion.identity);
+            DeadBodyInitializer dbinit = db.GetComponent<DeadBodyInitializer>();
+            dbinit.Initialize(player.transform.localScale, playerInfo.torso.GetComponent<Renderer>().material.color);
 
             player.transform.position = enemyPos;
             PlayerController pc = player.GetComponent<PlayerController>();
             if (pc != null)
             {
-                pc.Initialize(ms, mh, bs, fr, bd, s);
+                pc.Initialize(ms, mh, bs, fr, bd, s, c);
             }
             
         }

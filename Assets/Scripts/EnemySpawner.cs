@@ -12,16 +12,24 @@ public class EnemySpawner : MonoBehaviour
     private float spawnCooldown;
 
     private float range = 10.0f;
-    private float maxRange = 25.0f;
     private float shootRange = 10.0f;
-    private float moveSpeed = 3.0f;
-    private int maxHealth = 3;
-    private float bulletSpeed = 4.0f;
-    private float maxBulletSpeed = 100.0f;
+    private float moveSpeed = 5.0f;
+    private float maxHealth = 3f;
+    private float bulletSpeed = 8.0f;
     private float fireRate = 1.0f;
-    private int bulletDamage = 1;
+    private float bulletDamage = 1f;
     private float bulletDuration = 5.0f;
     private int numChanges;
+
+    private float specialMoveSpeed = 0;
+    private float specialMaxHealth = 0;
+    private float specialBulletSpeed = 0;
+    private float specialFireRate = 0;
+    private float specialBulletDamage = 0;
+    private Color c = Color.black;
+
+    private int buffMod;
+    private int prevBuffMod;
 
     void Start()
     {
@@ -34,6 +42,7 @@ public class EnemySpawner : MonoBehaviour
 
         spawnCooldown = 0f;
         numChanges = 0;
+        prevBuffMod = 0;
 
         Instantiate(enemy, new Vector2(30, Random.Range(-20, 20)), Quaternion.identity);
         Instantiate(enemy, new Vector2(-30, Random.Range(-20, 20)), Quaternion.identity);
@@ -83,7 +92,16 @@ public class EnemySpawner : MonoBehaviour
         EnemyBehavior stats = guy.GetComponent<EnemyBehavior>();
         if (stats != null)
         {
-            stats.Initialize(range, moveSpeed, maxHealth, bulletSpeed, fireRate, shootRange, bulletDamage, bulletDuration, numChanges);
+            stats.Initialize(range, Mathf.Max(moveSpeed, specialMoveSpeed), Mathf.Max(maxHealth, specialMaxHealth),
+                Mathf.Max(bulletSpeed, specialBulletSpeed), Mathf.Max(fireRate, specialFireRate), shootRange, 
+                Mathf.Max(bulletDamage, specialBulletDamage), bulletDuration, numChanges, c);
+
+            specialMoveSpeed = 0;
+            specialMaxHealth = 0;
+            specialBulletSpeed = 0;
+            specialFireRate = 0;
+            specialBulletDamage = 0;
+            c = Color.black;
         }
 
         spawnCooldown = Time.time + Random.Range(1, maxSpawnTime);
@@ -91,34 +109,49 @@ public class EnemySpawner : MonoBehaviour
 
     private void BuffGuys()
     {
-        int randStat = Random.Range(0, 8);
-        switch (randStat)
+        buffMod = (int)Time.time / 15;
+        if(buffMod > prevBuffMod)
         {
-            case 0:
-                range = Mathf.Min(range + 1, maxRange);
-                shootRange = Mathf.Max(shootRange, range);
-                break;
-            case 1:
-                moveSpeed += .5f;
-                break;
-            case 2:
-                maxHealth += 1;
-                break;
-            case 3:
-                bulletSpeed = Mathf.Min(bulletSpeed + 1, maxBulletSpeed);
-                break;
-            case 4:
-                fireRate += .25f;
-                break;
-            case 5:
-                shootRange += 1;
-                break;
-            case 6:
-                bulletDamage += 1;
-                break;
-            case 7:
-                bulletDuration += 2.5f;
-                break;
+            prevBuffMod = buffMod;
+
+            range += .25f;
+            moveSpeed += .5f;
+            maxHealth += .5f;
+            bulletSpeed += .5f;
+            fireRate += .5f;
+            shootRange += .5f;
+            bulletDamage += .25f;
+            bulletDuration += .1f;
+            numChanges++;
+        }
+
+        int superGuyChance = Random.Range(0, 10);
+        if(superGuyChance == 9)
+        {
+            int statIdx = Random.Range(0, 5);
+            switch (statIdx)
+            {
+                case 0:
+                    specialMoveSpeed = moveSpeed * Random.Range(2, 4);
+                    c = Color.blue;
+                    break;
+                case 1:
+                    specialMaxHealth = maxHealth * Random.Range(2, 4);
+                    c = Color.orange;
+                    break;
+                case 2:
+                    specialBulletSpeed = bulletSpeed * Random.Range(1.1f, 2f);
+                    c = Color.yellow;
+                    break;
+                case 3:
+                    specialFireRate = fireRate * Random.Range(2, 3);
+                    c = Color.purple;
+                    break;
+                case 4:
+                    specialBulletDamage = bulletDamage * Random.Range(2, 3);
+                    c = Color.red;
+                    break;
+            }
         }
     }
 }

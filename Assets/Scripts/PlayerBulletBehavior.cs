@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class PlayerBulletBehavior : MonoBehaviour
 {
-    public int damage;
+    public float damage;
+    public GameObject deadBodyPrefab;
     private float duration = 5.0f;
 
-    public void Initialize(int dmg)
+    public void Initialize(float dmg)
     {
         damage = dmg;
     }
@@ -27,7 +28,13 @@ public class PlayerBulletBehavior : MonoBehaviour
             EnemyBehavior enemy = col.GetComponent<EnemyBehavior>();
             if (enemy != null) 
             {
-                enemy.GetHit(damage);
+                bool isenemyDead = enemy.GetHit(damage);
+                if (isenemyDead) 
+                {
+                    GameObject db = Instantiate(deadBodyPrefab, enemy.transform.position, Quaternion.identity);
+                    DeadBodyInitializer dbinit = db.GetComponent<DeadBodyInitializer>();
+                    dbinit.Initialize(enemy.size, enemy.torso.GetComponent<Renderer>().material.color);
+                }
                 Destroy(gameObject);
             }
         }
