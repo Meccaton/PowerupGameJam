@@ -17,12 +17,12 @@ public class PosessionManager : MonoBehaviour
         {
             pm = this;
         }
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(gameObject);
     }
 
     void Start()
     {
-        
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()

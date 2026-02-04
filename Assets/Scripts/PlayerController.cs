@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
 
     public void Initialize(float ms, float mh, float bs, float fr, float bd, Vector3 s, Color c)
     {
+        alive = true;
+        gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         speed = ms;
         maxHealth = mh;
         health = maxHealth;
@@ -70,11 +72,11 @@ public class PlayerController : MonoBehaviour
         else
         {
             gameObject.transform.rotation = Quaternion.Euler(0, 0, -90f);
-            //if(Time.time > restartTimer)
-            //{
-            //    string currentSceneName = SceneManager.GetActiveScene().name;
-            //    SceneManager.LoadScene(currentSceneName);
-            //}
+            if (Time.time > restartTimer && !alive)
+            {
+                string currentSceneName = SceneManager.GetActiveScene().name;
+                SceneManager.LoadScene(currentSceneName);
+            }
         }
     }
 
